@@ -40,6 +40,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void open();
+    void save();
+    void about();
+
+private:
+    void createMenus();
+
 private:
     Ui::MainWindow *ui;
 };

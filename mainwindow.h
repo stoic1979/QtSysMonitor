@@ -40,6 +40,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void changeEvent(QEvent* e);
+
 private slots:
     void open();
     void save();

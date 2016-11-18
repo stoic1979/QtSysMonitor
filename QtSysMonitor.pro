@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = QtSysMonitor
 TEMPLATE = app
 
+RC_FILE = icon.rc
 
 SOURCES += main.cpp\
         mainwindow.cpp \

@@ -30,6 +30,8 @@
 
 #include <QMessageBox>
 #include <QDebug>
+#include <QTimer>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -46,6 +48,32 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::changeEvent(QEvent* e)
+{
+    switch (e->type())
+    {
+        case QEvent::LanguageChange:
+            this->ui->retranslateUi(this);
+            break;
+        case QEvent::WindowStateChange:
+            {
+                if (this->windowState() & Qt::WindowMinimized)
+                {
+                    //if (Preferences::instance().minimizeToTray())
+                    //{
+                        QTimer::singleShot(250, this, SLOT(hide()));
+                    //}
+                }
+
+                break;
+            }
+        default:
+            break;
+    }
+
+    QMainWindow::changeEvent(e);
 }
 
 void MainWindow::createMenus()

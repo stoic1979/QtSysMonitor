@@ -28,11 +28,19 @@
 
 #include <QObject>
 
+
+
 class SystemMonitor : public QObject
 {
     Q_OBJECT
 public:
     explicit SystemMonitor(QObject *parent = 0);
+
+    /**
+     * Returns the size of physical memory (RAM) in bytes.
+     */
+    size_t getMemorySize();
+
 
 signals:
 

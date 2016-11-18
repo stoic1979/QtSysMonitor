@@ -26,11 +26,19 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "systemmonitor.h"
+
+#include <QDebug>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    SystemMonitor sm;
+    qDebug() << "RAM: " << sm.getMemorySize();
+
 }
 
 MainWindow::~MainWindow()

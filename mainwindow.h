@@ -50,6 +50,7 @@ private slots:
 private:
     void createMenus();
     void addPieChart();
+    void addDonutChart();
 
 private:
     Ui::MainWindow *ui;

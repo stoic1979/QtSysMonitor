@@ -32,11 +32,9 @@
 #include <QDebug>
 #include <QTimer>
 
-#include <QtCharts/QChartView>
-#include <QtCharts/QPieSeries>
-#include <QtCharts/QPieSlice>
+#include <QtCharts>
+using namespace QtCharts;
 
-QT_CHARTS_USE_NAMESPACE
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

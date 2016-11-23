@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tabProcesses">
      <attribute name="title">
@@ -37,6 +37,11 @@
     <widget class="QWidget" name="tabResources">
      <attribute name="title">
       <string>Resources</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tabFileSystems">
+     <attribute name="title">
+      <string>File Systems</string>
      </attribute>
     </widget>
    </widget>

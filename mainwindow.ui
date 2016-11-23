@@ -43,6 +43,17 @@
      <attribute name="title">
       <string>File Systems</string>
      </attribute>
+     <widget class="QWidget" name="horizontalLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>40</y>
+        <width>631</width>
+        <height>311</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="hlFileSystems"/>
+     </widget>
     </widget>
    </widget>
   </widget>

@@ -49,6 +49,7 @@ private slots:
 
 private:
     void createMenus();
+    void addPieChart();
 
 private:
     Ui::MainWindow *ui;

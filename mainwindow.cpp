@@ -49,28 +49,8 @@ MainWindow::MainWindow(QWidget *parent) :
     SystemMonitor sm;
     qDebug() << "RAM: " << sm.getMemorySize();
 
-    QPieSeries *series = new QPieSeries();
-       series->append("Jane", 1);
-       series->append("Joe", 2);
-       series->append("Andy", 3);
-       series->append("Barbara", 4);
-       series->append("Axel", 5);
-
-       QPieSlice *slice = series->slices().at(1);
-       slice->setExploded();
-       slice->setLabelVisible();
-       slice->setPen(QPen(Qt::darkGreen, 2));
-       slice->setBrush(Qt::green);
-
-       QChart *chart = new QChart();
-       chart->addSeries(series);
-       chart->setTitle("Simple piechart example");
-       chart->legend()->hide();
-
-       QChartView *chartView = new QChartView(chart);
-       chartView->setRenderHint(QPainter::Antialiasing);
-
-       ui->hlFileSystems->addWidget(chartView);
+    // pie chart
+    addPieChart();
 
 }
 
@@ -83,23 +63,23 @@ void MainWindow::changeEvent(QEvent* e)
 {
     switch (e->type())
     {
-        case QEvent::LanguageChange:
-            this->ui->retranslateUi(this);
-            break;
-        case QEvent::WindowStateChange:
-            {
-                if (this->windowState() & Qt::WindowMinimized)
-                {
-                    //if (Preferences::instance().minimizeToTray())
-                    //{
-                        QTimer::singleShot(250, this, SLOT(hide()));
-                    //}
-                }
+    case QEvent::LanguageChange:
+        this->ui->retranslateUi(this);
+        break;
+    case QEvent::WindowStateChange:
+    {
+        if (this->windowState() & Qt::WindowMinimized)
+        {
+            //if (Preferences::instance().minimizeToTray())
+            //{
+            QTimer::singleShot(250, this, SLOT(hide()));
+            //}
+        }
 
-                break;
-            }
-        default:
-            break;
+        break;
+    }
+    default:
+        break;
     }
 
     QMainWindow::changeEvent(e);
@@ -136,5 +116,29 @@ void MainWindow::open() {
 }
 
 void MainWindow::save() {
+}
 
+void MainWindow::addPieChart() {
+    QPieSeries *series = new QPieSeries();
+    series->append("Jane", 1);
+    series->append("Joe", 2);
+    series->append("Andy", 3);
+    series->append("Barbara", 4);
+    series->append("Axel", 5);
+
+    QPieSlice *slice = series->slices().at(1);
+    slice->setExploded();
+    slice->setLabelVisible();
+    slice->setPen(QPen(Qt::darkGreen, 2));
+    slice->setBrush(Qt::green);
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Simple piechart example");
+    chart->legend()->hide();
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    ui->hlFileSystems->addWidget(chartView);
 }

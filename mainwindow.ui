@@ -13,14 +13,41 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>751</width>
+      <height>421</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="tabProcesses">
+     <attribute name="title">
+      <string>Processes</string>
+     </attribute>
+     <attribute name="toolTip">
+      <string>Show list of all running processes etc.</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tabResources">
+     <attribute name="title">
+      <string>Resources</string>
+     </attribute>
+    </widget>
+   </widget>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>764</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
   </widget>

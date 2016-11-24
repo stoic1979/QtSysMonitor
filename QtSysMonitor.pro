@@ -15,9 +15,11 @@ RC_FILE = icon.rc
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    systemmonitor.cpp
+    systemmonitor.cpp \
+    diskinfo.cpp
 
 HEADERS  += mainwindow.h \
-    systemmonitor.h
+    systemmonitor.h \
+    diskinfo.h
 
 FORMS    += mainwindow.ui

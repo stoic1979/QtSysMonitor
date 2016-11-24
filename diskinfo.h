@@ -15,6 +15,17 @@ class DiskInfo : public QObject
 public:
     explicit DiskInfo(QObject *parent = 0);
 
+    /**
+     * @brief getDisksInfo
+     * Function gets latest information about all disks
+     *
+     * Note:-
+     * ------
+     * Qt will be using platform specific source codes for
+     * Linux, Mac, Windows to obtain this informaiton.
+     */
+    void getDisksInfo();
+
 signals:
 
 public slots:

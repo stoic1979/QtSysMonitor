@@ -16,10 +16,12 @@ RC_FILE = icon.rc
 SOURCES += main.cpp\
         mainwindow.cpp \
     systemmonitor.cpp \
-    diskinfo.cpp
+    diskinfo.cpp \
+    qfilelogger.cpp
 
 HEADERS  += mainwindow.h \
     systemmonitor.h \
-    diskinfo.h
+    diskinfo.h \
+    qfilelogger.h
 
 FORMS    += mainwindow.ui

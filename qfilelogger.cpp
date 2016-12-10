@@ -11,11 +11,19 @@ QFileLogger::QFileLogger(QString filepath) : filepath(filepath),  file(filepath)
     }
 }
 
+QFileLogger* QFileLogger::Instance() {
+    return instance;
+}
 
-QFileLogger* QFileLogger::createLogger(QString filepath) {
+QFileLogger* QFileLogger::CreateLogger(QString filepath) {
     if(!instance) {
         instance = new QFileLogger(filepath);
     }
 
     return instance;
+}
+
+
+void QFileLogger::Debug(const char* msg) {
+    file.write(msg, strlen(msg));
 }

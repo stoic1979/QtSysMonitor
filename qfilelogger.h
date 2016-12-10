@@ -13,7 +13,10 @@
  */
 class QFileLogger {
 public:
-    static QFileLogger* createLogger(QString filepath);
+    static QFileLogger* CreateLogger(QString filepath);
+    QFileLogger* Instance();
+
+    void Debug(const char* msg);
 
 
 private:

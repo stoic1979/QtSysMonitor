@@ -14,7 +14,7 @@
 class QFileLogger {
 public:
     static QFileLogger* CreateLogger(QString filepath);
-    QFileLogger* Instance();
+    static QFileLogger* Instance();
 
     void Debug(const char* msg);
 

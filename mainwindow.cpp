@@ -28,6 +28,8 @@
 
 #include "systemmonitor.h"
 
+#include "qfilelogger.h"
+
 #include <QMessageBox>
 #include <QDebug>
 #include <QTimer>
@@ -52,6 +54,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // donut chart
     addDonutChart();
+
+    QFileLogger::CreateLogger(QString("logs.txt"));
+    QFileLogger::Instance()->Debug("test log");
+
 
 }
 

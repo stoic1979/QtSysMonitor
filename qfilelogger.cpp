@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QTextStream>
 
 #include "qfilelogger.h"
 
@@ -25,5 +26,8 @@ QFileLogger* QFileLogger::CreateLogger(QString filepath) {
 
 
 void QFileLogger::Debug(const char* msg) {
-    file.write(msg, strlen(msg));
+
+    QTextStream out(&file);
+
+    out << msg << "\r\n";
 }

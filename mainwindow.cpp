@@ -57,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // donut chart
     addDonutChart();
 
-    QFileLogger::CreateLogger(QString("logs.txt"));
+    QFileLogger::CreateLogger(QString("logs.txt"), DEBUG);
     QFileLogger::Instance()->Debug("test log");
 
 

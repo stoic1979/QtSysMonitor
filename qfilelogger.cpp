@@ -7,7 +7,7 @@ using namespace logger;
 
 static QFileLogger* instance;
 
-QFileLogger::QFileLogger(QString filepath) : filepath(filepath),  file(filepath) {
+QFileLogger::QFileLogger(QString filepath, LogLevel level) : filepath(filepath), file(filepath), level(level) {
     if(!file.open(QIODevice::WriteOnly | QIODevice::Append)) {
         qDebug() << "[QFileLogger] :: failed to open log file";
     }
@@ -17,9 +17,9 @@ QFileLogger* QFileLogger::Instance() {
     return instance;
 }
 
-QFileLogger* QFileLogger::CreateLogger(QString filepath) {
+QFileLogger* QFileLogger::CreateLogger(QString filepath, LogLevel level) {
     if(!instance) {
-        instance = new QFileLogger(filepath);
+        instance = new QFileLogger(filepath, level);
     }
 
     return instance;
@@ -33,26 +33,31 @@ void QFileLogger::AddLog(const char* msg) {
 
 
 void QFileLogger::Debug(const char* msg) {
-
-    AddLog(msg);
+    if(level <= DEBUG) {
+         AddLog(msg);
+    }
 }
 
 void QFileLogger::Info(const char* msg) {
-
-    AddLog(msg);
+    if(level <= INFO) {
+         AddLog(msg);
+    }
 }
 
 void QFileLogger::Warning(const char* msg) {
-
-    AddLog(msg);
+    if(level <= WARNING) {
+         AddLog(msg);
+    }
 }
 
 void QFileLogger::Critical(const char* msg) {
-
-    AddLog(msg);
+    if(level <= CRITICAL) {
+         AddLog(msg);
+    }
 }
 
 void QFileLogger::Error(const char* msg) {
-
-    AddLog(msg);
+    if(level <= ERROR) {
+         AddLog(msg);
+    }
 }

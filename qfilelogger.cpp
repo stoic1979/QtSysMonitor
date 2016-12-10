@@ -24,10 +24,33 @@ QFileLogger* QFileLogger::CreateLogger(QString filepath) {
     return instance;
 }
 
+void QFileLogger::AddLog(const char* msg) {
+
+    QTextStream out(&file);
+    out << msg << "\r\n";
+}
+
 
 void QFileLogger::Debug(const char* msg) {
 
-    QTextStream out(&file);
+    AddLog(msg);
+}
 
-    out << msg << "\r\n";
+void QFileLogger::Info(const char* msg) {
+
+    AddLog(msg);
+}
+void QFileLogger::Warning(const char* msg) {
+
+    AddLog(msg);
+}
+
+void QFileLogger::Critical(const char* msg) {
+
+    AddLog(msg);
+}
+
+void QFileLogger::Error(const char* msg) {
+
+    AddLog(msg);
 }

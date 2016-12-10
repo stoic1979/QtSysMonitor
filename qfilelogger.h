@@ -16,7 +16,13 @@ public:
     static QFileLogger* CreateLogger(QString filepath);
     static QFileLogger* Instance();
 
+    void AddLog(const char* msg);
+
     void Debug(const char* msg);
+    void Info(const char* msg);
+    void Warning(const char* msg);
+    void Critical(const char* msg);
+    void Error(const char* msg);
 
 
 private:

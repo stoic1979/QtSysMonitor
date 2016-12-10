@@ -4,6 +4,10 @@
 #include <QString>
 #include <QFile>
 
+namespace logger {
+
+
+
 /**
  * @brief The QFileLogger class
  *
@@ -34,5 +38,7 @@ private:
 
 
 };
+
+} // namespace logger
 
 #endif // QFILELOGGER_H

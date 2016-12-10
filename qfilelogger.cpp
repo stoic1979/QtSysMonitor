@@ -3,10 +3,11 @@
 
 #include "qfilelogger.h"
 
+using namespace logger;
+
 static QFileLogger* instance;
 
-QFileLogger::QFileLogger(QString filepath) : filepath(filepath),  file(filepath)
-{
+QFileLogger::QFileLogger(QString filepath) : filepath(filepath),  file(filepath) {
     if(!file.open(QIODevice::WriteOnly | QIODevice::Append)) {
         qDebug() << "[QFileLogger] :: failed to open log file";
     }
@@ -40,6 +41,7 @@ void QFileLogger::Info(const char* msg) {
 
     AddLog(msg);
 }
+
 void QFileLogger::Warning(const char* msg) {
 
     AddLog(msg);

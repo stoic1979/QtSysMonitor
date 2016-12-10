@@ -37,6 +37,8 @@
 #include <QtCharts>
 using namespace QtCharts;
 
+using namespace logger;
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

@@ -11,5 +11,6 @@
         <file>images/trash.png</file>
         <file>images/splash.png</file>
         <file>images/linux.png</file>
+        <file>images/cpu.png</file>
     </qresource>
 </RCC>

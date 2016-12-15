@@ -56,6 +56,8 @@ private:
     void addPieChart();
     void addDonutChart();
 
+    void showPlatformInfo();
+
 private:
     Ui::MainWindow *ui;
 

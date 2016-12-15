@@ -25,20 +25,17 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 #include "systemmonitor.h"
-
 #include "qfilelogger.h"
+#include "platforminfo.h"
 
 #include <QMessageBox>
 #include <QDebug>
 #include <QTimer>
-
 #include <QtCharts>
+
 using namespace QtCharts;
-
 using namespace logger;
-
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -66,14 +63,26 @@ MainWindow::MainWindow(QWidget *parent) :
     QFileLogger::Instance()->Critical("critical");
     QFileLogger::Instance()->Error("error");
 
-    ui->lblOsName->setText("Linux");
-    ui->lblOsIcon->setPixmap(QPixmap(":/images/linux.png"));
+    showPlatformInfo();
 
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::showPlatformInfo()
+{
+    PlatformInfo pInfo;
+
+    ui->lblOsName->setText(pInfo.getOsName());
+    ui->lblOsIcon->setPixmap(QPixmap(":/images/linux.png"));
+
+    qDebug() << "CPU Architecure: " << pInfo.getCpuArchitecture();
+
+    ui->lblCpuArch->setText(pInfo.getCpuArchitecture());
+    ui->lblCpuIcon->setPixmap(QPixmap(":/images/cpu.png"));
 }
 
 void MainWindow::changeEvent(QEvent* e)

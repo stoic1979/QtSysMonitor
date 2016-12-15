@@ -19,14 +19,16 @@ SOURCES += main.cpp\
     diskinfo.cpp \
     qfilelogger.cpp \
     aboutdialog.cpp \
-    settingsdialog.cpp
+    settingsdialog.cpp \
+    platforminfo.cpp
 
 HEADERS  += mainwindow.h \
     systemmonitor.h \
     diskinfo.h \
     qfilelogger.h \
     aboutdialog.h \
-    settingsdialog.h
+    settingsdialog.h \
+    platforminfo.h
 
 FORMS    += mainwindow.ui \
     aboutdialog.ui \

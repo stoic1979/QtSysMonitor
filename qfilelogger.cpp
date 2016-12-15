@@ -8,7 +8,11 @@ using namespace logger;
 
 static QFileLogger* instance;
 
-QFileLogger::QFileLogger(QString filepath, LogLevel level) : filepath(filepath), file(filepath), level(level) {
+QFileLogger::QFileLogger(QString filepath, LogLevel level):
+    filepath(filepath),
+    file(filepath),
+    level(level)
+{
     if(!file.open(QIODevice::WriteOnly | QIODevice::Append)) {
         qDebug() << "[QFileLogger] :: failed to open log file";
     }

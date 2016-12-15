@@ -18,6 +18,8 @@ public:
 private slots:
     void on_btnSaveSettings_clicked();
 
+    void on_btnCancelSettings_clicked();
+
 private:
     Ui::SettingsDialog *ui;
 };

@@ -25,3 +25,8 @@ void SettingsDialog::on_btnSaveSettings_clicked()
 
     hide();
 }
+
+void SettingsDialog::on_btnCancelSettings_clicked()
+{
+     hide();
+}

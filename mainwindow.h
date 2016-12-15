@@ -28,6 +28,8 @@
 
 #include <QMainWindow>
 
+#include "aboutdialog.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -54,6 +56,8 @@ private:
 
 private:
     Ui::MainWindow *ui;
+
+    AboutDialog dlgAbout;
 };
 
 #endif // MAINWINDOW_H

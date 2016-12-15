@@ -119,9 +119,7 @@ void MainWindow::createMenus()
 }
 
 void MainWindow::about() {
-    QMessageBox msgBox;
-    msgBox.setText("QtSystemMonitor - Under R&D By Weavebytes");
-    msgBox.exec();
+    dlgAbout.show();
 }
 
 void MainWindow::open() {

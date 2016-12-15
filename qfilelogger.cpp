@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QTextStream>
+#include <QDateTime>
 
 #include "qfilelogger.h"
 
@@ -28,36 +29,36 @@ QFileLogger* QFileLogger::CreateLogger(QString filepath, LogLevel level) {
 void QFileLogger::AddLog(const char* msg) {
 
     QTextStream out(&file);
-    out << msg << "\r\n";
+    out << QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss.zzz") << msg << "\r\n";
 }
 
 
 void QFileLogger::Debug(const char* msg) {
     if(level <= DEBUG) {
-         AddLog(msg);
+         AddLog(QString(" [DEBUG] %1").arg(msg).toLatin1() );
     }
 }
 
 void QFileLogger::Info(const char* msg) {
     if(level <= INFO) {
-         AddLog(msg);
+         AddLog(QString(" [INFO] %1").arg(msg).toLatin1() );
     }
 }
 
 void QFileLogger::Warning(const char* msg) {
     if(level <= WARNING) {
-         AddLog(msg);
+         AddLog(QString(" [WARNING] %1").arg(msg).toLatin1() );
     }
 }
 
 void QFileLogger::Critical(const char* msg) {
     if(level <= CRITICAL) {
-         AddLog(msg);
+         AddLog(QString(" [CRITICAL] %1").arg(msg).toLatin1() );
     }
 }
 
 void QFileLogger::Error(const char* msg) {
     if(level <= ERROR) {
-         AddLog(msg);
+         AddLog(QString(" [ERROR] %1").arg(msg).toLatin1() );
     }
 }

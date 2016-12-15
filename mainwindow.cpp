@@ -112,7 +112,7 @@ void MainWindow::createMenus()
     fileMenu->addAction(tr("E&xit"),this, SLOT(close()), QKeySequence::Quit);
 
     QMenu *const editMenu = menuBar()->addMenu(tr("&Edit"));
-
+    editMenu->addAction("Settings", this, SLOT(showSettings()));
 
 
     QMenu *const helpMenu = menuBar()->addMenu(tr("&Help"));
@@ -120,6 +120,9 @@ void MainWindow::createMenus()
     helpMenu->addSeparator();
 
 
+}
+void MainWindow::showSettings() {
+    dlgSettings.show();
 }
 
 void MainWindow::about() {

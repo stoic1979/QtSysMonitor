@@ -28,6 +28,7 @@
 
 #include <QMainWindow>
 
+#include "settingsdialog.h"
 #include "aboutdialog.h"
 
 namespace Ui {
@@ -48,6 +49,7 @@ private slots:
     void open();
     void save();
     void about();
+    void showSettings();
 
 private:
     void createMenus();
@@ -58,6 +60,8 @@ private:
     Ui::MainWindow *ui;
 
     AboutDialog dlgAbout;
+
+    SettingsDialog dlgSettings;
 };
 
 #endif // MAINWINDOW_H

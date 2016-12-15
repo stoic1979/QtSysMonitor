@@ -18,16 +18,19 @@ SOURCES += main.cpp\
     systemmonitor.cpp \
     diskinfo.cpp \
     qfilelogger.cpp \
-    aboutdialog.cpp
+    aboutdialog.cpp \
+    settingsdialog.cpp
 
 HEADERS  += mainwindow.h \
     systemmonitor.h \
     diskinfo.h \
     qfilelogger.h \
-    aboutdialog.h
+    aboutdialog.h \
+    settingsdialog.h
 
 FORMS    += mainwindow.ui \
-    aboutdialog.ui
+    aboutdialog.ui \
+    settingsdialog.ui
 
 RESOURCES += \
     images.qrc

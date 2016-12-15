@@ -7,6 +7,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setModal(true);
     setFixedSize(width(), height());
 
     ui->lblIcon->setPixmap(QPixmap(":/images/system.png"));

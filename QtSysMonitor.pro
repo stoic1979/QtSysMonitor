@@ -29,4 +29,5 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     aboutdialog.ui
 
-RESOURCES +=
+RESOURCES += \
+    images.qrc

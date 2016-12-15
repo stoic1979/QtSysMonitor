@@ -17,11 +17,16 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     systemmonitor.cpp \
     diskinfo.cpp \
-    qfilelogger.cpp
+    qfilelogger.cpp \
+    aboutdialog.cpp
 
 HEADERS  += mainwindow.h \
     systemmonitor.h \
     diskinfo.h \
-    qfilelogger.h
+    qfilelogger.h \
+    aboutdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    aboutdialog.ui
+
+RESOURCES +=

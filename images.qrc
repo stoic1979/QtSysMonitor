@@ -9,5 +9,6 @@
         <file>images/Printer 1.png</file>
         <file>images/system.png</file>
         <file>images/trash.png</file>
+        <file>images/splash.png</file>
     </qresource>
 </RCC>

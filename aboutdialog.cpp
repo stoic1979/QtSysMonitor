@@ -6,6 +6,8 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
+
+    ui->lblIcon->setPixmap(QPixmap(":/images/system.png"));
 }
 
 AboutDialog::~AboutDialog()

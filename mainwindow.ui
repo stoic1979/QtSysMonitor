@@ -24,8 +24,16 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
+    <widget class="QWidget" name="tabPlatform">
+     <attribute name="title">
+      <string>Platform</string>
+     </attribute>
+     <attribute name="toolTip">
+      <string>Show information about OS etc..</string>
+     </attribute>
+    </widget>
     <widget class="QWidget" name="tabProcesses">
      <attribute name="title">
       <string>Processes</string>

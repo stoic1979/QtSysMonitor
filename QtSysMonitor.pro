@@ -31,3 +31,8 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     images.qrc
+
+DISTFILES += \
+    images/linux.png \
+    images/mac.png \
+    images/windows.png

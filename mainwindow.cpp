@@ -46,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("Qt System Monitor");
+    setFixedSize(width(), height());
+
     createMenus();
 
     SystemMonitor sm;
@@ -64,6 +66,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QFileLogger::Instance()->Critical("critical");
     QFileLogger::Instance()->Error("error");
 
+    ui->lblOsName->setText("Linux");
+    ui->lblOsIcon->setPixmap(QPixmap(":/images/linux.png"));
 
 }
 

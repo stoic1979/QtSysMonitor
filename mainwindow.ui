@@ -99,6 +99,39 @@
        <string>CPU Arch</string>
       </property>
      </widget>
+     <widget class="QLabel" name="lblRamIcon">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>50</y>
+        <width>140</width>
+        <height>140</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lblRam">
+      <property name="geometry">
+       <rect>
+        <x>550</x>
+        <y>210</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>RAM</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tabProcesses">
      <attribute name="title">

@@ -47,9 +47,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     createMenus();
 
-    SystemMonitor sm;
-    qDebug() << "RAM: " << sm.getMemorySize();
-
     // pie chart
     addPieChart();
 
@@ -76,13 +73,23 @@ void MainWindow::showPlatformInfo()
 {
     PlatformInfo pInfo;
 
+    // OS
     ui->lblOsName->setText(pInfo.getOsName());
     ui->lblOsIcon->setPixmap(QPixmap(":/images/linux.png"));
 
     qDebug() << "CPU Architecure: " << pInfo.getCpuArchitecture();
 
+    // CPU
     ui->lblCpuArch->setText(pInfo.getCpuArchitecture());
     ui->lblCpuIcon->setPixmap(QPixmap(":/images/cpu.png"));
+
+
+    // RAM
+    SystemMonitor sm;
+    qDebug() << "RAM: " << sm.getMemorySize();
+
+    ui->lblRam->setText(sm.getMemorySizeStr());
+    ui->lblRamIcon->setPixmap(QPixmap(":/images/ram.png"));
 }
 
 void MainWindow::changeEvent(QEvent* e)

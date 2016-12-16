@@ -119,3 +119,8 @@ size_t SystemMonitor::getMemorySize() {
     return 0L;			/* Unknown OS. */
 #endif
 }
+
+QString SystemMonitor::getMemorySizeStr() {
+    float sz = getMemorySize()/(1024*1024*1024);
+    return QString("%1 GB").arg(sz);
+}

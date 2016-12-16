@@ -42,6 +42,12 @@ public:
     size_t getMemorySize();
 
 
+    /**
+     * @brief getMemorySizeStr
+     * @return String description of memory, eg. 4GB etc.
+     */
+    QString getMemorySizeStr();
+
 signals:
 
 public slots:

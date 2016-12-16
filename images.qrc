@@ -12,5 +12,6 @@
         <file>images/splash.png</file>
         <file>images/linux.png</file>
         <file>images/cpu.png</file>
+        <file>images/ram.png</file>
     </qresource>
 </RCC>

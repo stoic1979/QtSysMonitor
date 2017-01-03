@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     settingsdialog.cpp \
     platforminfo.cpp \
     process.cpp \
-    disk.cpp
+    disk.cpp \
+    networksocket.cpp
 
 HEADERS  += mainwindow.h \
     systemmonitor.h \
@@ -32,7 +33,9 @@ HEADERS  += mainwindow.h \
     settingsdialog.h \
     platforminfo.h \
     process.h \
-    disk.h
+    disk.h \
+    networksocket.h
+
 
 FORMS    += mainwindow.ui \
     aboutdialog.ui \

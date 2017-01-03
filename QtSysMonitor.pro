@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     qfilelogger.cpp \
     aboutdialog.cpp \
     settingsdialog.cpp \
-    platforminfo.cpp
+    platforminfo.cpp \
+    process.cpp
 
 HEADERS  += mainwindow.h \
     systemmonitor.h \
@@ -28,7 +29,8 @@ HEADERS  += mainwindow.h \
     qfilelogger.h \
     aboutdialog.h \
     settingsdialog.h \
-    platforminfo.h
+    platforminfo.h \
+    process.h
 
 FORMS    += mainwindow.ui \
     aboutdialog.ui \

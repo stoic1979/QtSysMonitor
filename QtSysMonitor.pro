@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     platforminfo.cpp \
     process.cpp \
     disk.cpp \
-    networksocket.cpp
+    networksocket.cpp \
+    batteryinfo.cpp
 
 HEADERS  += mainwindow.h \
     systemmonitor.h \
@@ -34,7 +35,9 @@ HEADERS  += mainwindow.h \
     platforminfo.h \
     process.h \
     disk.h \
-    networksocket.h
+    networksocket.h \
+    batteryinfo.h \
+    defs.h
 
 
 FORMS    += mainwindow.ui \

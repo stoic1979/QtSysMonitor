@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     aboutdialog.cpp \
     settingsdialog.cpp \
     platforminfo.cpp \
-    process.cpp
+    process.cpp \
+    disk.cpp
 
 HEADERS  += mainwindow.h \
     systemmonitor.h \
@@ -30,7 +31,8 @@ HEADERS  += mainwindow.h \
     aboutdialog.h \
     settingsdialog.h \
     platforminfo.h \
-    process.h
+    process.h \
+    disk.h
 
 FORMS    += mainwindow.ui \
     aboutdialog.ui \

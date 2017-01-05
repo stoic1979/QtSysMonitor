@@ -30,6 +30,7 @@
 
 #include "settingsdialog.h"
 #include "aboutdialog.h"
+#include "processwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -59,11 +60,10 @@ private:
     void showPlatformInfo();
 
 private:
-    Ui::MainWindow *ui;
-
-    AboutDialog dlgAbout;
-
-    SettingsDialog dlgSettings;
+    Ui::MainWindow     *ui;
+    AboutDialog         dlgAbout;
+    SettingsDialog      dlgSettings;
+    ProcessWidget      *widProcesses;
 };
 
 #endif // MAINWINDOW_H

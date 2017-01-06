@@ -55,6 +55,7 @@ class SystemUtil : public QObject
     QStringList   mOutputList;      // To store the split values of output
 
     int findHeaderRow();
+    int findNetstatHeaderRow();
 
 public:
     explicit SystemUtil(QObject *parent = 0);

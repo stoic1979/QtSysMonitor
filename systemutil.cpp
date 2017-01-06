@@ -92,12 +92,49 @@ int SystemUtil::parseProcesses(QList<Process> *processList){
     mOutputList.clear();
     mOutputList = mOutputString.split('\n' , QString::SkipEmptyParts );
 
+    /**************************************************************************/
+    /**************************************************************************/
+    // This is necessary because top command can produce different
+    // output in different platforms .
+    /**************************************************************************/
+
+    //---------------------------------------------------------//
+    // headerRowIndex stores the value of index of header row,
+    // so that we know where actual data starts.(from next line)
+    //---------------------------------------------------------//
+    int headerRowIndex = findHeaderRow();
+
+    QString headerRow = mOutputList.at(headerRowIndex);
+    QStringList splittedHeaderRow = headerRow.split(' ',QString::SkipEmptyParts );
+
+    //---------------------------------------------------------//
+    // Variables to store the indexes of headings so that actual
+    // required data can be retrieved .
+    //---------------------------------------------------------//
+    int indexId, indexUser, indexCpu, indexMemory;
+
+    for(int i = 0 ; i < splittedHeaderRow.size() ; i++){
+        QString val = splittedHeaderRow.at(i);
+        if(val.toUpper() == "PID"){
+            indexId = i;
+        }else if(val.toUpper() == "USER"){
+            indexUser = i;
+        }else if(val.toUpper() == "%CPU"){
+            indexCpu = i;
+        }else if(val.toUpper() == "RES"){
+            indexMemory = i;
+        }
+    }
+    /**************************************************************************/
+    /**************************************************************************/
+
     Process p;
     //---------------------------------------------------------//
-    // loop start from 9 because mOutputList.at( 9 )
+    // headerRowIndex contains the headings and hence the
+    // first row with required data will be at headerRowIndex+1
     // contains the first process in the list
     //---------------------------------------------------------//
-    for(int  i = 9 ; i < mOutputList.size() ; i++ ){
+    for(int  i = headerRowIndex+1 ; i < mOutputList.size() ; i++ ){
 
         QString str = mOutputList.at( i ) ;
 
@@ -109,12 +146,13 @@ int SystemUtil::parseProcesses(QList<Process> *processList){
         //------------------------------------------------------------------//
         //splits the numerical value of memory from string on the basis of m
         //------------------------------------------------------------------//
-        QStringList memValue = splittedString[ 5 ].split( QRegExp("m"), QString::SkipEmptyParts );
+        QStringList memValue = splittedString[ indexMemory ]
+                .split( QRegExp("m"), QString::SkipEmptyParts );
 
         QString pName   = splittedString.last() ;
-        QString user    = splittedString[ 1 ] ;
-        quint64 pID     = splittedString[ 0 ].toLong();
-        float cpuUsage  = splittedString[ 6 ].toDouble();
+        QString user    = splittedString[ indexUser ] ;
+        quint64 pID     = splittedString[ indexId ].toLong();
+        float cpuUsage  = splittedString[ indexCpu ].toDouble();
         double memUsage = memValue[0].toDouble();
 
         p.setProcessId(pID);
@@ -329,5 +367,27 @@ void SystemUtil::showBatteryDetails() {
 
     b.showInfo();
 
+}
 
+/**
+ * @brief SystemUtil::findHeaderRow
+ * @return index of header row
+ * This functions helps to find out the first header row index
+ * after which required data will be present.
+ */
+int SystemUtil::findHeaderRow(){
+
+    int iterator = 0;
+    while(iterator < mOutputList.size()){
+
+        QString singleRow = mOutputList.at(iterator);
+        QStringList splittedSingleRow = singleRow.split(QRegExp("\\s"),QString::SkipEmptyParts);
+
+        QString firstMember = splittedSingleRow.at(0);
+        firstMember = firstMember.toUpper();
+        if(firstMember == "PID"){
+            return iterator;
+        }
+        iterator+=1;
+    }
 }

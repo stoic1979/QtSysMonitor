@@ -50,10 +50,11 @@ class SystemUtil : public QObject
     QProcess     *mNetstatProcess;  // QProcess mNetstatProcess handle the subprocess 'netstat'
     QString       mProcess;         // The path of subprocess 'top'
     QStringList   mEnv;             // Sets necessary TERM environment variable required for top command
-    QStringList   mArguments;       // Arguments list to handle 'top' process properly
-    QString       mOutputString;
-    QStringList   mOutputList;
+    QStringList   mArguments;       // Arguments list to handle processes properly
+    QString       mOutputString;    // To store the output produced by the commands
+    QStringList   mOutputList;      // To store the split values of output
 
+    int findHeaderRow();
 
 public:
     explicit SystemUtil(QObject *parent = 0);

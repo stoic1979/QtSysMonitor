@@ -69,7 +69,7 @@ void ProcessWidget::populateUi(){
                                              (processList.at(i).getUser()));
         pCpuUsageItem = new QTableWidgetItem(QString("%1 %").
                                              arg(QString::number(processList.at(i).getCpuUsage(),'f',2)));
-        pMemUsageItem = new QTableWidgetItem(QString("%1 %").
+        pMemUsageItem = new QTableWidgetItem(QString("%1 KiB").
                                              arg(QString::number(processList.at(i).getMemoryUsage(),'f',2)));
 
         pidItem->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);

@@ -92,12 +92,49 @@ int SystemUtil::parseProcesses(QList<Process> *processList){
     mOutputList.clear();
     mOutputList = mOutputString.split('\n' , QString::SkipEmptyParts );
 
+    /**************************************************************************/
+    /**************************************************************************/
+    // This is necessary because top command can produce different
+    // output in different platforms .
+    /**************************************************************************/
+
+    //---------------------------------------------------------//
+    // headerRowIndex stores the value of index of header row,
+    // so that we know where actual data starts.(from next line)
+    //---------------------------------------------------------//
+    int headerRowIndex = findHeaderRow();
+
+    QString headerRow = mOutputList.at(headerRowIndex);
+    QStringList splittedHeaderRow = headerRow.split(' ',QString::SkipEmptyParts );
+
+    //---------------------------------------------------------//
+    // Variables to store the indexes of headings so that actual
+    // required data can be retrieved .
+    //---------------------------------------------------------//
+    int indexId, indexUser, indexCpu, indexMemory;
+
+    for(int i = 0 ; i < splittedHeaderRow.size() ; i++){
+        QString val = splittedHeaderRow.at(i);
+        if(val.toUpper() == "PID"){
+            indexId = i;
+        }else if(val.toUpper() == "USER"){
+            indexUser = i;
+        }else if(val.toUpper() == "%CPU"){
+            indexCpu = i;
+        }else if(val.toUpper() == "RES"){
+            indexMemory = i;
+        }
+    }
+    /**************************************************************************/
+    /**************************************************************************/
+
     Process p;
     //---------------------------------------------------------//
-    // loop start from 9 because mOutputList.at( 9 )
+    // headerRowIndex contains the headings and hence the
+    // first row with required data will be at headerRowIndex+1
     // contains the first process in the list
     //---------------------------------------------------------//
-    for(int  i = 9 ; i < mOutputList.size() ; i++ ){
+    for(int  i = headerRowIndex+1 ; i < mOutputList.size() ; i++ ){
 
         QString str = mOutputList.at( i ) ;
 
@@ -109,12 +146,13 @@ int SystemUtil::parseProcesses(QList<Process> *processList){
         //------------------------------------------------------------------//
         //splits the numerical value of memory from string on the basis of m
         //------------------------------------------------------------------//
-        QStringList memValue = splittedString[ 5 ].split( QRegExp("m"), QString::SkipEmptyParts );
+        QStringList memValue = splittedString[ indexMemory ]
+                .split( QRegExp("m"), QString::SkipEmptyParts );
 
         QString pName   = splittedString.last() ;
-        QString user    = splittedString[ 1 ] ;
-        quint64 pID     = splittedString[ 0 ].toLong();
-        float cpuUsage  = splittedString[ 6 ].toDouble();
+        QString user    = splittedString[ indexUser ] ;
+        quint64 pID     = splittedString[ indexId ].toLong();
+        float cpuUsage  = splittedString[ indexCpu ].toDouble();
         double memUsage = memValue[0].toDouble();
 
         p.setProcessId(pID);
@@ -205,6 +243,116 @@ int SystemUtil::parseSockets(QList<NetworkSocket> *socketList){
     mOutputList.clear();
     mOutputList = mOutputString.split('\n' , QString::SkipEmptyParts );
 
+    /**************************************************************************/
+    /**************************************************************************/
+    // This is necessary because netstat command can produce different
+    // output in different platforms .
+    /**************************************************************************/
+
+    //---------------------------------------------------------//
+    // headerRowIndex stores the value of index of header row,
+    // so that we know where actual data starts.(from next line)
+    //---------------------------------------------------------//
+    int headerRowIndex = findNetstatHeaderRow();
+
+    QString headerRow = mOutputList.at(headerRowIndex);
+    QStringList splittedHeaderRow = headerRow.split(' ',QString::SkipEmptyParts );
+
+    //---------------------------------------------------------//
+    // Variables to store the indexes of headings so that actual
+    // required data can be retrieved .
+    //---------------------------------------------------------//
+    int indexProto, indexReceive, indexSend, indexLAddress, indexFAddress, indexState;
+
+    //---------------------------------------------------------//
+    // To determine whether local address and foreign address
+    // have appeared or not, because they both appear as "foreign" and "address"
+    // as two different strings
+    //---------------------------------------------------------//
+    bool flagLAddress = false;
+    bool flagFAddress = false;
+    for(int i = 0 ; i < splittedHeaderRow.size() ; i++){
+        QString val = splittedHeaderRow.at(i);
+        if(val.toUpper() == "PROTO"){
+
+            if(!flagFAddress && !flagLAddress){
+                indexProto = i;
+            }else{
+                if(flagFAddress && flagLAddress){
+                    indexProto = i - 2;
+                }else if(flagLAddress || flagFAddress){
+                    indexProto = i - 1;
+                }
+            }
+
+        }else if(val.toUpper() == "RECV-Q"){
+
+            if(!flagFAddress && !flagLAddress){
+                indexReceive = i;
+            }else{
+                if(flagFAddress && flagLAddress){
+                    indexReceive = i - 2;
+                }else if(flagLAddress || flagFAddress){
+                    indexReceive = i - 1;
+                }
+            }
+
+        }else if(val.toUpper() == "SEND-Q"){
+
+            if(!flagFAddress && !flagLAddress){
+                indexSend = i;
+            }else{
+                if(flagFAddress && flagLAddress){
+                    indexSend = i - 2;
+                }else if(flagLAddress || flagFAddress){
+                    indexSend = i - 1;
+                }
+            }
+
+        }else if(val.toUpper() == "LOCAL"){
+            flagLAddress = true;
+
+            if(!flagFAddress && !flagLAddress){
+                indexLAddress = i;
+            }else{
+                if(flagFAddress && flagLAddress){
+                    indexFAddress = i - 2;
+                }else if(flagLAddress || flagFAddress){
+                    indexLAddress = i - 1;
+                }
+            }
+
+        }else if(val.toUpper() == "FOREIGN"){
+            flagFAddress = true;
+
+            if(!flagFAddress && !flagLAddress){
+                indexFAddress = i;
+            }else{
+                if(flagFAddress && flagLAddress){
+                    indexFAddress = i - 2;
+                }else if(flagLAddress || flagFAddress){
+                    indexFAddress = i - 1;
+                }
+            }
+
+        }else if(val.toUpper() == "STATE"){
+
+            if(!flagFAddress && !flagLAddress){
+                indexState = i;
+            }else{
+                if(flagFAddress && flagLAddress){
+                    indexState = i - 2;
+                }else if(flagLAddress || flagFAddress){
+                    indexState = i - 1;
+                }
+            }
+
+        }
+    }
+    /**************************************************************************/
+    /**************************************************************************/
+
+
     NetworkSocket s;
 
     //---------------------------------------------------------//
@@ -221,11 +369,11 @@ int SystemUtil::parseSockets(QList<NetworkSocket> *socketList){
         //---------------------------------------------------------//
         QStringList splittedString = str.split( QRegExp("\\s"), QString::SkipEmptyParts );
 
-        QString  ProtocolType   = splittedString.at(0);
-        quint64  ReceiveQ       = splittedString.at(1).toLong();
-        quint64  SendQ          = splittedString.at(2).toLong();
-        QString  LocalAddress   = splittedString.at(3);
-        QString  ForeignAddress = splittedString.at(4);
+        QString  ProtocolType   = splittedString.at(indexProto);
+        quint64  ReceiveQ       = splittedString.at(indexReceive).toLong();
+        quint64  SendQ          = splittedString.at(indexSend).toLong();
+        QString  LocalAddress   = splittedString.at(indexLAddress);
+        QString  ForeignAddress = splittedString.at(indexFAddress);
 
         QString  State;
         quint64  PID;
@@ -239,7 +387,7 @@ int SystemUtil::parseSockets(QList<NetworkSocket> *socketList){
         if(splittedString.size() < 7) {
             State = "";
         } else {
-            State = splittedString.at(5);
+            State = splittedString.at(indexState);
         }
 
         //------------------------------------------------------------//
@@ -329,5 +477,50 @@ void SystemUtil::showBatteryDetails() {
 
     b.showInfo();
 
+}
 
+/**
+ * @brief SystemUtil::findHeaderRow
+ * @return index of header row
+ * This functions helps to find out the first header row index
+ * after which required data will be present for the top process output.
+ */
+int SystemUtil::findHeaderRow(){
+
+    int iterator = 0;
+    while(iterator < mOutputList.size()){
+
+        QString singleRow = mOutputList.at(iterator);
+        QStringList splittedSingleRow = singleRow.split(QRegExp("\\s"),QString::SkipEmptyParts);
+
+        QString firstMember = splittedSingleRow.at(0);
+        firstMember = firstMember.toUpper();
+        if(firstMember == "PID"){
+            return iterator;
+        }
+        iterator+=1;
+    }
+}
+
+/**
+ * @brief SystemUtil::findNetstatHeaderRow
+ * @return
+ * This functions helps to find out the first header row index
+ * after which required data will be present for the netstat process output
+ */
+int SystemUtil::findNetstatHeaderRow(){
+
+    int iterator = 0;
+    while(iterator < mOutputList.size()){
+
+        QString singleRow = mOutputList.at(iterator);
+        QStringList splittedSingleRow = singleRow.split(QRegExp("\\s"),QString::SkipEmptyParts);
+
+        QString firstMember = splittedSingleRow.at(0);
+        firstMember = firstMember.toUpper();
+        if(firstMember == "PROTO"){
+            return iterator;
+        }
+        iterator+=1;
+    }
 }

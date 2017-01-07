@@ -42,11 +42,12 @@ class ProcessWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit ProcessWidget(QTableWidget *wid,QPushButton *btn, QWidget *parent = 0);
+    explicit ProcessWidget(SystemUtil *util, QTableWidget *wid,QPushButton *btn, QWidget *parent = 0);
     ~ProcessWidget();
 
 
 private:
+    SystemUtil    *utilities;
     QTableWidget  *widget;
     QPushButton   *refreshButton;
 

@@ -47,11 +47,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     createMenus();
 
-    // pie chart
-    addPieChart();
-
-    // donut chart
-    addDonutChart();
+//    // donut chart
+//    addDonutChart();
 
     QFileLogger::CreateLogger(QString("logs.txt"), DEBUG);
     QFileLogger::Instance()->Debug("debug");
@@ -61,13 +58,16 @@ MainWindow::MainWindow(QWidget *parent) :
     QFileLogger::Instance()->Error("error");
 
     showPlatformInfo();
-    widProcesses = new ProcessWidget(ui->tableWidget, ui->refreshButton);
+    util         = new SystemUtil();
+    widProcesses = new ProcessWidget(util, ui->tableWidget, ui->refreshButton);
     widProcesses->populateUi();
+    widFileSystem = new DiskWidget(util, ui->hlFileSystems);
 }
 
 MainWindow::~MainWindow()
 {
     delete widProcesses;
+    delete util;
     delete ui;
 }
 
@@ -153,32 +153,6 @@ void MainWindow::open() {
 
 void MainWindow::save() {
 }
-
-void MainWindow::addPieChart() {
-    QPieSeries *series = new QPieSeries();
-    series->append("Jane", 1);
-    series->append("Joe", 2);
-    series->append("Andy", 3);
-    series->append("Barbara", 4);
-    series->append("Axel", 5);
-
-    QPieSlice *slice = series->slices().at(1);
-    slice->setExploded();
-    slice->setLabelVisible();
-    slice->setPen(QPen(Qt::darkGreen, 2));
-    slice->setBrush(Qt::green);
-
-    QChart *chart = new QChart();
-    chart->addSeries(series);
-    chart->setTitle("Simple piechart example");
-    chart->legend()->hide();
-
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-
-    ui->hlFileSystems->addWidget(chartView);
-}
-
 
 void MainWindow::addDonutChart() {
     QPieSeries *series = new QPieSeries();

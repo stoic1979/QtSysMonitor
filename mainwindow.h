@@ -31,6 +31,7 @@
 #include "settingsdialog.h"
 #include "aboutdialog.h"
 #include "processwidget.h"
+#include "diskwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -54,7 +55,7 @@ private slots:
 
 private:
     void createMenus();
-    void addPieChart();
+
     void addDonutChart();
 
     void showPlatformInfo();
@@ -63,7 +64,9 @@ private:
     Ui::MainWindow     *ui;
     AboutDialog         dlgAbout;
     SettingsDialog      dlgSettings;
+    SystemUtil         *util;
     ProcessWidget      *widProcesses;
+    DiskWidget         *widFileSystem;
 };
 
 #endif // MAINWINDOW_H

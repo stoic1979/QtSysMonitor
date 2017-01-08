@@ -25,8 +25,9 @@
 
 #include "processwidget.h"
 
-ProcessWidget::ProcessWidget(QTableWidget *wid, QPushButton *btn, QWidget *parent) :
+ProcessWidget::ProcessWidget(SystemUtil *util, QTableWidget *wid, QPushButton *btn, QWidget *parent) :
     QWidget(parent),
+    utilities(util),
     widget(wid),
     refreshButton(btn)
 {
@@ -41,9 +42,8 @@ ProcessWidget::~ProcessWidget(){
 
 void ProcessWidget::populateUi(){
 
-    SystemUtil util;
     QList<Process> processList;
-    int returnCode = util.getProcessesList(&processList);
+    int returnCode = utilities->getProcessesList(&processList);
 
     if(returnCode == ST_SUCCESS){
         qDebug() << "Successfully retrieved process list. . . ";

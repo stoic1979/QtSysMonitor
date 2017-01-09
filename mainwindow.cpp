@@ -177,7 +177,9 @@ void MainWindow::addPieChart() {
 
     for(int i = 0; i < diskList->size() ; i++){
         qreal percentage = (qreal)diskList->at(i).getTotalBytes() / (qreal)totalBytes;
-        slice = new QPieSlice(diskList->at(i).getRootPath(),percentage);
+        QString str = QString(diskList->at(i).getRootPath()+" = "
+                              + QString::number(percentage*100) + " %");
+        slice = new QPieSlice(str, percentage);
         sliceList.append(slice);
     }
 
@@ -189,7 +191,7 @@ void MainWindow::addPieChart() {
     chart->legend()->setVisible(true);
     chart->legend()->setAlignment(Qt::AlignLeft);
     chart->legend()->setShowToolTips(true);
-    chart->setTitle("Disk Information");
+    chart->setTitle(QString("Disk Information (Disk Count : "+QString::number(diskList->size())+" )"));
 
     QChartView *chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
@@ -219,6 +221,13 @@ void MainWindow::addDonutChart() {
     ui->hlFileSystems->addWidget(chartView);
 }
 
+/**
+ * @brief MainWindow::handleLabel
+ * @param slice
+ * @param state
+ *
+ * Changes states of label of slices on the basis of hovering
+ */
 void MainWindow::handleLabel(QPieSlice *slice, bool state){
 
     if(state == true){

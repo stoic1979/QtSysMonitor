@@ -160,6 +160,12 @@ void MainWindow::addPieChart() {
     QList<Disk> *diskList = new QList<Disk>();
     int returnCode = util.getDiskList(diskList);
 
+    if(returnCode == ST_SUCCESS){
+        qDebug() << "Successfully retrieved disk list. . . ";
+    }else {
+        qDebug() << "Problem retrieving disk list . . . . .";
+    }
+
     QPieSeries *series = new QPieSeries();
     QList<QPieSlice*> sliceList;
     QPieSlice *slice;
@@ -176,6 +182,7 @@ void MainWindow::addPieChart() {
     }
 
     series->append(sliceList);
+    connect(series, SIGNAL(hovered(QPieSlice*,bool)), this, SLOT(handleLabel(QPieSlice*,bool)));
 
     QChart *chart = new QChart();
     chart->addSeries(series);
@@ -211,3 +218,18 @@ void MainWindow::addDonutChart() {
 
     ui->hlFileSystems->addWidget(chartView);
 }
+
+void MainWindow::handleLabel(QPieSlice *slice, bool state){
+
+    if(state == true){
+        slice->setLabelVisible(true);
+        slice->setBorderColor(QColor(Qt::green));
+        slice->setBorderWidth(2);
+    }else{
+        slice->setLabelVisible(false);
+        slice->setBorderColor(QColor(Qt::white));
+        slice->setBorderWidth(1);
+    }
+
+}
+

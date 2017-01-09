@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     addPieChart();
 
     // donut chart
-    addDonutChart();
+    // addDonutChart();
 
     QFileLogger::CreateLogger(QString("logs.txt"), DEBUG);
     QFileLogger::Instance()->Debug("debug");
@@ -155,23 +155,34 @@ void MainWindow::save() {
 }
 
 void MainWindow::addPieChart() {
-    QPieSeries *series = new QPieSeries();
-    series->append("Jane", 1);
-    series->append("Joe", 2);
-    series->append("Andy", 3);
-    series->append("Barbara", 4);
-    series->append("Axel", 5);
 
-    QPieSlice *slice = series->slices().at(1);
-    slice->setExploded();
-    slice->setLabelVisible();
-    slice->setPen(QPen(Qt::darkGreen, 2));
-    slice->setBrush(Qt::green);
+    SystemUtil util;
+    QList<Disk> *diskList = new QList<Disk>();
+    int returnCode = util.getDiskList(diskList);
+
+    QPieSeries *series = new QPieSeries();
+    QList<QPieSlice*> sliceList;
+    QPieSlice *slice;
+    quint64 totalBytes = 0;
+
+    for(int i = 0; i < diskList->size() ; i++){
+        totalBytes += diskList->at(i).getTotalBytes();
+    }
+
+    for(int i = 0; i < diskList->size() ; i++){
+        qreal percentage = (qreal)diskList->at(i).getTotalBytes() / (qreal)totalBytes;
+        slice = new QPieSlice(diskList->at(i).getRootPath(),percentage);
+        sliceList.append(slice);
+    }
+
+    series->append(sliceList);
 
     QChart *chart = new QChart();
     chart->addSeries(series);
-    chart->setTitle("Simple piechart example");
-    chart->legend()->hide();
+    chart->legend()->setVisible(true);
+    chart->legend()->setAlignment(Qt::AlignLeft);
+    chart->legend()->setShowToolTips(true);
+    chart->setTitle("Disk Information");
 
     QChartView *chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);

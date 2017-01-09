@@ -176,7 +176,7 @@ int SystemUtil::parseProcesses(QList<Process> *processList){
  * @param diskList           - contains list of Disks
  * @return exit_status
  *
- * Analyze the details of disks that are mounted on the system
+ * Analyze the details of disks on the system
  * and poplutes the diskList with Disk object
  */
 int SystemUtil::getDiskList(QList<Disk> *diskList){
@@ -261,7 +261,7 @@ int SystemUtil::parseDisks(QList<Disk> *diskList){
             }else{
                 indexDevice = i - 1;
             }
-        }else if(val == QString("MOUNT")){
+        }else if(val == QString("MOUNTED")){
             indexRootPath = i;
             mountOn = true;
         }

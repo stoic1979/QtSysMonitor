@@ -42,6 +42,15 @@ class Disk
     QString mFileSystemType;
     QString mDevice;
 
+    /**
+     * @brief showSize
+     * @param val
+     * @return value with its size byte
+     *
+     * Evaluate whether the size is in KBs, MBs, GBs and so on
+     */
+    QString showSize(quint64 val) const;
+
 public:
     /**
      * @brief Disk

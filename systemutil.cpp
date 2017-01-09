@@ -1,5 +1,6 @@
 #include "systemutil.h"
 #include <QDebug>
+#include <QStorageInfo>
 
 /**
  * @brief SystemUtil::SystemUtil

@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tabPlatform">
      <attribute name="title">
@@ -145,8 +145,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>981</width>
-        <height>571</height>
+        <width>258</width>
+        <height>234</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -233,8 +233,8 @@
        <rect>
         <x>30</x>
         <y>40</y>
-        <width>631</width>
-        <height>311</height>
+        <width>941</width>
+        <height>541</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="hlFileSystems"/>

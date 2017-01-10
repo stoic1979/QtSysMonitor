@@ -117,9 +117,9 @@ void Disk::showInfo() const{
     qDebug() << "---------------- DISK INFO ------------------";
     qDebug() << "Name . . . . . . : " << getName();
     qDebug() << "Root path. . . . : " << getRootPath();
-    qDebug() << "Available bytes. : " << getAvailableBytes()/1024/1024 << " MB .";
-    qDebug() << "Total bytes. . . : " << getTotalBytes()/1024/1024 << " MB .";
-    qDebug() << "File System type : " << getFileSystemType() ;
+    qDebug() << "Available bytes. : " << showSize(getAvailableBytes());
+    qDebug() << "Total bytes. . . : " << showSize(getTotalBytes());
+    qDebug() << "File System type : " << getFileSystemType();
     qDebug() << "Device . . . . . : " << getDevice();
     qDebug() << "---------------------------------------------";
 }
@@ -149,3 +149,32 @@ void Disk::setDevice(QString device){
     mDevice = device;
 }
 /**-----------------------------------------------------------------------**/
+
+/**
+ * @brief Disk::showSize
+ * @param val
+ * @return value with its size byte
+ *
+ * Evaluate whether the size is in KBs, MBs, GBs and so on
+ */
+QString Disk::showSize(quint64 val) const{
+    QString charSet = "KMGTPEZY";
+    int i = 0;
+
+    QString result;
+    QString res = charSet.at(i);
+    double prevValue, value ;
+    value = val;
+
+    while(value > 1){
+        prevValue = value;
+        value = value/1024;
+        i+=1;
+    }
+
+    result = QString::number(prevValue);
+    result = QString(result +" " + charSet.at(i-1) + "B");
+
+    return result;
+
+}

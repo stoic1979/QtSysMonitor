@@ -32,6 +32,7 @@
 #include "settingsdialog.h"
 #include "aboutdialog.h"
 #include "processwidget.h"
+#include "resourceswidget.h"
 
 using namespace QtCharts;
 
@@ -68,6 +69,7 @@ private:
     AboutDialog         dlgAbout;
     SettingsDialog      dlgSettings;
     ProcessWidget      *widProcesses;
+    ResourcesWidget    *widResources;
     QTimer             *processTimer;
     QSettings           settings;
 

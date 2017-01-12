@@ -215,6 +215,71 @@
      <attribute name="title">
       <string>Resources</string>
      </attribute>
+     <widget class="QTableWidget" name="resourcesTable">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>981</width>
+        <height>581</height>
+       </rect>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>110</number>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>Protocol Type</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Receive-Q</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Send-Q</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Local Address</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Foreign Address</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>State</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>PID</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Program Name</string>
+       </property>
+      </column>
+     </widget>
     </widget>
     <widget class="QWidget" name="tabFileSystems">
      <attribute name="title">

@@ -64,6 +64,9 @@ MainWindow::MainWindow(QWidget *parent) :
     widProcesses = new ProcessWidget(ui->tableWidget);
     widProcesses->populateUi();
 
+    widResources = new ResourcesWidget(ui->resourcesTable);
+    widResources->populateUi();
+
     processTimer = new QTimer(this);
     processTimer->start();
     processTimer->setInterval(settings.value("timer/process").toInt() * 1000);

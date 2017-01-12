@@ -27,6 +27,7 @@
 #define SETTINGSDIALOG_H
 
 #include <QDialog>
+#include <QSettings>
 
 namespace Ui {
 class SettingsDialog;
@@ -39,11 +40,15 @@ class SettingsDialog : public QDialog
 public:
     explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();
+    QSettings settings;
 
 private slots:
     void on_btnSaveSettings_clicked();
 
     void on_btnCancelSettings_clicked();
+
+signals:
+    void settingsChanged();
 
 private:
     Ui::SettingsDialog *ui;

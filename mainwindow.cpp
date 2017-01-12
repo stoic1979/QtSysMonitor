@@ -64,16 +64,17 @@ MainWindow::MainWindow(QWidget *parent) :
     widProcesses = new ProcessWidget(ui->tableWidget);
     widProcesses->populateUi();
 
-    timer = new QTimer(this);
-    timer->start();
-    timer->setInterval(5000);
+    processTimer = new QTimer(this);
+    processTimer->start();
+    processTimer->setInterval(settings.value("timer/process").toInt() * 1000);
 
-    connect(timer, SIGNAL(timeout()), widProcesses, SLOT(refreshTimer()));
+    connect(processTimer, SIGNAL(timeout()), widProcesses, SLOT(refreshTimer()));
+    connect(&dlgSettings, SIGNAL(settingsChanged()), this, SLOT(refreshSettings()));
 }
 
 MainWindow::~MainWindow()
 {
-    delete timer;
+    delete processTimer;
     delete widProcesses;
     delete ui;
 }
@@ -249,3 +250,12 @@ void MainWindow::handleLabel(QPieSlice *slice, bool state){
 
 }
 
+/**
+ * @brief MainWindow::refreshSettings
+ *
+ * Slot function to apply the settings as soon as settings are changed.
+ */
+void MainWindow::refreshSettings(){
+
+    processTimer->setInterval(settings.value("timer/process").toInt() * 1000);
+}

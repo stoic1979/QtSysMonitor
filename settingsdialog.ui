@@ -17,9 +17,9 @@
    <property name="geometry">
     <rect>
      <x>550</x>
-     <y>440</y>
+     <y>431</y>
      <width>80</width>
-     <height>22</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -32,7 +32,7 @@
      <x>10</x>
      <y>20</y>
      <width>621</width>
-     <height>411</height>
+     <height>401</height>
     </rect>
    </property>
    <property name="currentIndex">
@@ -91,7 +91,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Critical</string>
+      <string>Critica&amp;l</string>
      </property>
     </widget>
     <widget class="QRadioButton" name="radioButton_2">
@@ -152,14 +152,54 @@
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="tab_3">
+    <attribute name="title">
+     <string>Refresh Rate</string>
+    </attribute>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>50</y>
+       <width>321</width>
+       <height>80</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="processLabel">
+        <property name="text">
+         <string>Process tab</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="processSpinBox"/>
+      </item>
+     </layout>
+    </widget>
+   </widget>
   </widget>
   <widget class="QPushButton" name="btnCancelSettings">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>440</y>
+     <y>431</y>
      <width>80</width>
-     <height>22</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -168,5 +208,22 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>processLabel</sender>
+   <signal>linkHovered(QString)</signal>
+   <receiver>processSpinBox</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>92</x>
+     <y>146</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>346</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

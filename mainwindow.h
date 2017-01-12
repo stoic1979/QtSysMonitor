@@ -68,7 +68,11 @@ private:
     AboutDialog         dlgAbout;
     SettingsDialog      dlgSettings;
     ProcessWidget      *widProcesses;
-    QTimer             *timer;
+    QTimer             *processTimer;
+    QSettings           settings;
+
+public slots:
+    void refreshSettings();
 };
 
 #endif // MAINWINDOW_H

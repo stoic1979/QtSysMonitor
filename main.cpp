@@ -33,6 +33,10 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
+    QApplication::setOrganizationDomain("weavebytes.com");
+    QApplication::setOrganizationName("Weave Bytes");
+    QApplication::setApplicationName("QtSysMonitor");
+
     // showing splash
     QPixmap pixmap(":images/splash.png");
     QSplashScreen splash(pixmap);

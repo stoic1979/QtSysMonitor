@@ -61,12 +61,19 @@ MainWindow::MainWindow(QWidget *parent) :
     QFileLogger::Instance()->Error("error");
 
     showPlatformInfo();
-    widProcesses = new ProcessWidget(ui->tableWidget, ui->refreshButton);
+    widProcesses = new ProcessWidget(ui->tableWidget);
     widProcesses->populateUi();
+
+    timer = new QTimer(this);
+    timer->start();
+    timer->setInterval(5000);
+
+    connect(timer, SIGNAL(timeout()), widProcesses, SLOT(refreshTimer()));
 }
 
 MainWindow::~MainWindow()
 {
+    delete timer;
     delete widProcesses;
     delete ui;
 }

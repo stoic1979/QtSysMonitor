@@ -25,13 +25,12 @@
 
 #include "processwidget.h"
 
-ProcessWidget::ProcessWidget(QTableWidget *wid, QPushButton *btn, QWidget *parent) :
+ProcessWidget::ProcessWidget(QTableWidget *wid, QWidget *parent) :
     QWidget(parent),
-    widget(wid),
-    refreshButton(btn)
+    widget(wid)
 {
-    connect(refreshButton, SIGNAL(clicked(bool)), this, SLOT(deleteAllocatedItems()));
-    connect(refreshButton, SIGNAL(clicked(bool)), this, SLOT(populateUi()));
+    connect(this, SIGNAL(refreshData()), this, SLOT(deleteAllocatedItems()));
+    connect(this, SIGNAL(refreshData()), this, SLOT(populateUi()));
 
 }
 
@@ -96,4 +95,8 @@ void ProcessWidget::deleteAllocatedItems(){
         }
     }
 
+}
+
+void ProcessWidget::refreshTimer(){
+    emit refreshData();
 }

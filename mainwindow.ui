@@ -145,8 +145,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>258</width>
-        <height>234</height>
+        <width>981</width>
+        <height>581</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -206,18 +206,10 @@
          </column>
         </widget>
        </item>
-       <item>
-        <widget class="QPushButton" name="refreshButton">
-         <property name="text">
-          <string>Refresh</string>
-         </property>
-         <property name="shortcut">
-          <string>F5</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </widget>
+     <zorder>layoutWidget</zorder>
+     <zorder>tableWidget</zorder>
     </widget>
     <widget class="QWidget" name="tabResources">
      <attribute name="title">

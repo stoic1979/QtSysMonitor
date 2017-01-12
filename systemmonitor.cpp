@@ -121,6 +121,22 @@ size_t SystemMonitor::getMemorySize() {
 }
 
 QString SystemMonitor::getMemorySizeStr() {
-    float sz = getMemorySize()/(1024*1024*1024);
-    return QString("%1 GB").arg(sz);
+    QString charSet = " KMGTPEZY";
+    int i = 0;
+
+    QString result;
+    QString res = charSet.at(i);
+    double prevValue, value ;
+    value = getMemorySize();
+
+    while(value > 1){
+        prevValue = value;
+        value = value/1024;
+        i+=1;
+    }
+
+    result = QString::number(prevValue);
+    result = QString(result +" " + charSet.at(i-1) + "B");
+
+    return result;
 }

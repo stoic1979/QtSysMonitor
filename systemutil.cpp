@@ -106,6 +106,10 @@ int SystemUtil::parseProcesses(QList<Process> *processList){
     //---------------------------------------------------------//
     int headerRowIndex = findHeaderRow();
 
+    if(headerRowIndex == -1) {
+        return ST_FAILED;
+    }
+
     QString headerRow = mOutputList.at(headerRowIndex);
     QStringList splittedHeaderRow = headerRow.split(' ',QString::SkipEmptyParts );
 
@@ -344,6 +348,10 @@ int SystemUtil::parseSockets(QList<NetworkSocket> *socketList){
     // so that we know where actual data starts.(from next line)
     //---------------------------------------------------------//
     int headerRowIndex = findNetstatHeaderRow();
+
+    if(headerRowIndex == -1) {
+        return ST_FAILED;
+    }
 
     QString headerRow = mOutputList.at(headerRowIndex);
     QStringList splittedHeaderRow = headerRow.split(' ',QString::SkipEmptyParts );
@@ -590,6 +598,7 @@ int SystemUtil::findHeaderRow(){
         }
         iterator+=1;
     }
+    return -1;
 }
 
 /**
@@ -613,4 +622,5 @@ int SystemUtil::findNetstatHeaderRow(){
         }
         iterator+=1;
     }
+    return -1;
 }

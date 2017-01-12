@@ -67,16 +67,20 @@ MainWindow::MainWindow(QWidget *parent) :
     widResources = new ResourcesWidget(ui->resourcesTable);
     widResources->populateUi();
 
-    processTimer = new QTimer(this);
-    processTimer->start();
+    processTimer = new QTimer(this); processTimer->start();
+    socketTimer  = new QTimer(this); socketTimer->start();
+
     processTimer->setInterval(settings.value("timer/process").toInt() * 1000);
+    socketTimer->setInterval(settings.value("timer/socket").toInt() * 1000);
 
     connect(processTimer, SIGNAL(timeout()), widProcesses, SLOT(refreshTimer()));
+    connect(socketTimer, SIGNAL(timeout()), widResources, SLOT(refreshTimer()));
     connect(&dlgSettings, SIGNAL(settingsChanged()), this, SLOT(refreshSettings()));
 }
 
 MainWindow::~MainWindow()
 {
+    delete socketTimer;
     delete processTimer;
     delete widProcesses;
     delete ui;
@@ -261,4 +265,5 @@ void MainWindow::handleLabel(QPieSlice *slice, bool state){
 void MainWindow::refreshSettings(){
 
     processTimer->setInterval(settings.value("timer/process").toInt() * 1000);
+    socketTimer->setInterval(settings.value("timer/socket").toInt() * 1000);
 }

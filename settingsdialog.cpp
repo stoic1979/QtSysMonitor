@@ -39,6 +39,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     setFixedSize(width(), height());
 
     ui->processSpinBox->setValue(settings.value("timer/process").toInt());
+    ui->socketSpinBox->setValue(settings.value("timer/socket").toInt());
 }
 
 SettingsDialog::~SettingsDialog()
@@ -50,6 +51,8 @@ void SettingsDialog::on_btnSaveSettings_clicked()
 {
     QSpinBox *box = ui->processSpinBox;
     settings.setValue("timer/process",box->value());
+    box = ui->socketSpinBox;
+    settings.setValue("timer/socket",box->value());
     emit settingsChanged();
     hide();
 }

@@ -71,6 +71,7 @@ private:
     ProcessWidget      *widProcesses;
     ResourcesWidget    *widResources;
     QTimer             *processTimer;
+    QTimer             *socketTimer;
     QSettings           settings;
 
 public slots:

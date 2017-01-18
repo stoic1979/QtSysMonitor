@@ -34,7 +34,7 @@ PlatformInfo::PlatformInfo(QObject *parent) : QObject(parent)
 QString PlatformInfo::getOsName()
 {
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     switch(QSysInfo::windowsVersion())
     {
     case QSysInfo::WV_2000: return "Windows 2000";
@@ -48,11 +48,30 @@ QString PlatformInfo::getOsName()
     }
 #endif
 
-#ifndef Q_WS_MAC
-  return "Macintosh";
+#ifdef Q_OS_LINUX
+    return "Linux";
+#endif
 
-  // fixme check OS verion !!!
+#ifdef Q_OS_MAC
+    switch(QSysInfo::macVersion())
+    {
+    case QSysInfo::MV_9: return "macOS 9";
+    case QSysInfo::MV_10_0: return "macOS 10.0";
+    case QSysInfo::MV_10_1: return "macOS 10.1";
+    case QSysInfo::MV_10_2: return "macOS 10.2";
+    case QSysInfo::MV_10_3: return "macOS 10.3";
+    case QSysInfo::MV_10_4: return "macOS 10.4";
+    case QSysInfo::MV_10_5: return "macOS 10.5";
+    case QSysInfo::MV_10_6: return "macOS 10.6";
+    case QSysInfo::MV_10_7: return "macOS 10.7";
+    case QSysInfo::MV_10_8: return "macOS 10.8";
+    case QSysInfo::MV_10_9: return "macOS 10.9";
+    case QSysInfo::MV_10_10: return "macOS 10.10";
+    case QSysInfo::MV_10_11: return "macOS 10.11";
+    case QSysInfo::MV_10_12: return "macOS 10.12";
 
+    default: return "Macintosh";
+    }
 #endif
 
     return "Unknow OS";

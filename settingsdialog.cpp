@@ -27,6 +27,7 @@
 #include "ui_settingsdialog.h"
 
 #include <QDebug>
+#include <QSpinBox>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -36,6 +37,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     setModal(true);
     setFixedSize(width(), height());
+
+    ui->processSpinBox->setValue(settings.value("timer/process").toInt());
+    ui->socketSpinBox->setValue(settings.value("timer/socket").toInt());
 }
 
 SettingsDialog::~SettingsDialog()
@@ -45,9 +49,11 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::on_btnSaveSettings_clicked()
 {
-    //FIXME
-    qDebug() << "Saving settings - to do !";
-
+    QSpinBox *box = ui->processSpinBox;
+    settings.setValue("timer/process",box->value());
+    box = ui->socketSpinBox;
+    settings.setValue("timer/socket",box->value());
+    emit settingsChanged();
     hide();
 }
 

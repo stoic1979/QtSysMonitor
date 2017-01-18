@@ -13,6 +13,7 @@ SystemUtil::SystemUtil( QObject *parent )
 
     mTopProcess      =  new QProcess(parent);
     mNetstatProcess  =  new QProcess(parent);
+    mDfProcess       =  new QProcess(parent);
 
     mEnv             =  QProcess::systemEnvironment();
     //---------------------------------------------------------//
@@ -38,6 +39,7 @@ SystemUtil::SystemUtil( QObject *parent )
 SystemUtil::~SystemUtil(){
     delete mTopProcess;
     delete mNetstatProcess;
+    delete mDfProcess;
 }
 
 /**
@@ -104,6 +106,10 @@ int SystemUtil::parseProcesses(QList<Process> *processList){
     //---------------------------------------------------------//
     int headerRowIndex = findHeaderRow();
 
+    if(headerRowIndex == -1) {
+        return ST_FAILED;
+    }
+
     QString headerRow = mOutputList.at(headerRowIndex);
     QStringList splittedHeaderRow = headerRow.split(' ',QString::SkipEmptyParts );
 
@@ -151,7 +157,7 @@ int SystemUtil::parseProcesses(QList<Process> *processList){
 
         QString pName   = splittedString.last() ;
         QString user    = splittedString[ indexUser ] ;
-        quint64 pID     = splittedString[ indexId ].toLong();
+        quint64 pID     = splittedString[ indexId ].toLongLong();
         float cpuUsage  = splittedString[ indexCpu ].toDouble();
         double memUsage = memValue[0].toDouble();
 
@@ -174,34 +180,122 @@ int SystemUtil::parseProcesses(QList<Process> *processList){
  * @param diskList           - contains list of Disks
  * @return exit_status
  *
- * Analyze the details of disks that are mounted on the system
+ * Analyze the details of disks on the system
  * and poplutes the diskList with Disk object
  */
 int SystemUtil::getDiskList(QList<Disk> *diskList){
 
     qDebug() <<"Getting Disk List . . . . . . . . . ";
 
-    Disk d;
-    foreach ( const QStorageInfo &disk, QStorageInfo::mountedVolumes()) {
-        if( disk.isValid() && disk.isReady() ){
-            if( !disk.isReadOnly() ){
+    mProcess = "df";
 
-                d.setName(disk.displayName());
-                d.setRootPath(disk.rootPath());
-                d.setAvailableBytes(disk.bytesAvailable());
-                d.setTotalBytes(disk.bytesTotal());
-                d.setFileSystemType(disk.fileSystemType());
-                d.setDevice(disk.device());
+    //---------------------------------------------------------//
+    // -T        for file system type
+    //---------------------------------------------------------//
+    mArguments.clear();
+    mArguments << "-T" ;
 
-                diskList->append(d);
+    mDfProcess -> start( mProcess , mArguments );
 
+    //---------------------------------------------------------//
+    // to check whether mDfProcess has started or not
+    //---------------------------------------------------------//
+    if( !mDfProcess->waitForStarted() ) {
+        qDebug() << "ERROR : " << mDfProcess->error();
+    }
+
+    mDfProcess->waitForFinished() ;
+
+    return parseDisks(diskList);
+}
+
+/**
+ * @brief SystemUtil::parseDisks
+ * @param diskList
+ * @return exit_status
+ *
+ * takes the output of df command, split it and store it in Disk value object
+ * appends the disk to diskList
+ */
+int SystemUtil::parseDisks(QList<Disk> *diskList){
+
+    mOutputString.clear();
+    mOutputString = QString(mDfProcess->readAll());
+
+    mOutputList.clear();
+    mOutputList = mOutputString.split(QRegExp("\n"), QString::SkipEmptyParts);
+
+    //---------------------------------------------------------//
+    // No need to find the index of header row this time because
+    // the arguments forces the output of command to have header
+    // row in first row mOutputList.
+    //---------------------------------------------------------//
+    QString headerRow = mOutputList.at(0);
+
+    QStringList splittedHeaderRow = headerRow.split(QRegExp("\\s"), QString::SkipEmptyParts);
+
+    int indexName, indexRootPath, indexAvailable, indexTotal, indexFileSystem, indexDevice;
+
+    for(int i = 0; i < splittedHeaderRow.size();i++){
+        bool mountOn = false;
+        QString val = splittedHeaderRow.at(i);
+        val = val.toUpper();
+
+        if(val == QString("TYPE")){
+            if(!mountOn){
+                indexFileSystem = i;
+            }else {
+                indexFileSystem = i-1;
             }
+        }else if(val == QString("1K-BLOCKS")) {
+            if(!mountOn){
+                indexTotal = i;
+            }else{
+                indexTotal = i - 1;
+            }
+        }else if(val == QString("AVAILABLE")) {
+            if(!mountOn){
+                indexAvailable = i;
+            }else {
+                indexAvailable = i - 1;
+            }
+        }else if(val == QString("FILESYSTEM")) {
+            if(!mountOn){
+                indexDevice = i;
+            }else{
+                indexDevice = i - 1;
+            }
+        }else if(val == QString("MOUNTED")){
+            indexRootPath = i;
+            mountOn = true;
         }
+    }
+    indexName = indexRootPath;
+
+    Disk d;
+
+    for(int i = 1; i < mOutputList.size(); i++){
+
+        QString singleRow = mOutputList.at(i);
+        QStringList splittedSingleRow = singleRow.split(QRegExp("\\s"), QString::SkipEmptyParts);
+
+        quint64 total = splittedSingleRow.at(indexTotal).toLongLong();
+        quint64 available = splittedSingleRow.at(indexAvailable).toLongLong();
+
+        d.setName(splittedSingleRow.at( indexName ));
+        d.setRootPath(splittedSingleRow.at( indexRootPath ));
+        d.setAvailableBytes(available);
+        d.setTotalBytes(total);
+        d.setDevice(splittedSingleRow.at( indexDevice ));
+        d.setFileSystemType(splittedSingleRow.at( indexFileSystem));
+
+        diskList->append(d);
+
     }
 
     return ST_SUCCESS;
-}
 
+}
 
 int SystemUtil::getSocketList(QList<NetworkSocket> *socketList){
 
@@ -254,6 +348,10 @@ int SystemUtil::parseSockets(QList<NetworkSocket> *socketList){
     // so that we know where actual data starts.(from next line)
     //---------------------------------------------------------//
     int headerRowIndex = findNetstatHeaderRow();
+
+    if(headerRowIndex == -1) {
+        return ST_FAILED;
+    }
 
     QString headerRow = mOutputList.at(headerRowIndex);
     QStringList splittedHeaderRow = headerRow.split(' ',QString::SkipEmptyParts );
@@ -370,8 +468,8 @@ int SystemUtil::parseSockets(QList<NetworkSocket> *socketList){
         QStringList splittedString = str.split( QRegExp("\\s"), QString::SkipEmptyParts );
 
         QString  ProtocolType   = splittedString.at(indexProto);
-        quint64  ReceiveQ       = splittedString.at(indexReceive).toLong();
-        quint64  SendQ          = splittedString.at(indexSend).toLong();
+        quint64  ReceiveQ       = splittedString.at(indexReceive).toLongLong();
+        quint64  SendQ          = splittedString.at(indexSend).toLongLong();
         QString  LocalAddress   = splittedString.at(indexLAddress);
         QString  ForeignAddress = splittedString.at(indexFAddress);
 
@@ -401,7 +499,7 @@ int SystemUtil::parseSockets(QList<NetworkSocket> *socketList){
             QString     lastColumnValue     = splittedString.last();
             QStringList splittedLastColumn  = lastColumnValue.split(QRegExp("/"));
 
-            PID         = splittedLastColumn.at(0).toLong();
+            PID         = splittedLastColumn.at(0).toLongLong();
             ProgramName = splittedLastColumn.at(1);
         }
 
@@ -445,25 +543,25 @@ void SystemUtil::showBatteryDetails() {
             break;
         case 1: b.setStatus(splittedString.at(1));
             break;
-        case 2: b.setSupplyPresent(splittedString.at(1).toLong());
+        case 2: b.setSupplyPresent(splittedString.at(1).toLongLong());
             break;
         case 3: b.setSupplyTechnology(splittedString.at(1));
             break;
-        case 4: b.setSupplyCycleCount(splittedString.at(1).toLong());
+        case 4: b.setSupplyCycleCount(splittedString.at(1).toLongLong());
             break;
-        case 5: b.setSupplyVoltageMinDesign(splittedString.at(1).toLong());
+        case 5: b.setSupplyVoltageMinDesign(splittedString.at(1).toLongLong());
             break;
-        case 6: b.setSupplyVoltageNow(splittedString.at(1).toLong());
+        case 6: b.setSupplyVoltageNow(splittedString.at(1).toLongLong());
             break;
-        case 7: b.setSupplyCurrentNow(splittedString.at(1).toLong());
+        case 7: b.setSupplyCurrentNow(splittedString.at(1).toLongLong());
             break;
-        case 8: b.setSupplyChargeFullDesign(splittedString.at(1).toLong());
+        case 8: b.setSupplyChargeFullDesign(splittedString.at(1).toLongLong());
             break;
-        case 9: b.setSupplyChargeFull(splittedString.at(1).toLong());
+        case 9: b.setSupplyChargeFull(splittedString.at(1).toLongLong());
             break;
-        case 10: b.setSupplyChargeNow(splittedString.at(1).toLong());
+        case 10: b.setSupplyChargeNow(splittedString.at(1).toLongLong());
             break;
-        case 11: b.setSupplyCapacity(splittedString.at(1).toLong());
+        case 11: b.setSupplyCapacity(splittedString.at(1).toLongLong());
             break;
         case 12: b.setSupplyCapacityLevel(splittedString.at(1));
             break;
@@ -500,6 +598,7 @@ int SystemUtil::findHeaderRow(){
         }
         iterator+=1;
     }
+    return -1;
 }
 
 /**
@@ -523,4 +622,5 @@ int SystemUtil::findNetstatHeaderRow(){
         }
         iterator+=1;
     }
+    return -1;
 }

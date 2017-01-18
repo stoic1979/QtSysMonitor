@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     addPieChart();
 
     // donut chart
-    addDonutChart();
+    // addDonutChart();
 
     QFileLogger::CreateLogger(QString("logs.txt"), DEBUG);
     QFileLogger::Instance()->Debug("debug");
@@ -61,12 +61,27 @@ MainWindow::MainWindow(QWidget *parent) :
     QFileLogger::Instance()->Error("error");
 
     showPlatformInfo();
-    widProcesses = new ProcessWidget(ui->tableWidget, ui->refreshButton);
+    widProcesses = new ProcessWidget(ui->tableWidget);
     widProcesses->populateUi();
+
+    widResources = new ResourcesWidget(ui->resourcesTable);
+    widResources->populateUi();
+
+    processTimer = new QTimer(this); processTimer->start();
+    socketTimer  = new QTimer(this); socketTimer->start();
+
+    processTimer->setInterval(settings.value("timer/process").toInt() * 1000);
+    socketTimer->setInterval(settings.value("timer/socket").toInt() * 1000);
+
+    connect(processTimer, SIGNAL(timeout()), widProcesses, SLOT(refreshTimer()));
+    connect(socketTimer, SIGNAL(timeout()), widResources, SLOT(refreshTimer()));
+    connect(&dlgSettings, SIGNAL(settingsChanged()), this, SLOT(refreshSettings()));
 }
 
 MainWindow::~MainWindow()
 {
+    delete socketTimer;
+    delete processTimer;
     delete widProcesses;
     delete ui;
 }
@@ -155,23 +170,43 @@ void MainWindow::save() {
 }
 
 void MainWindow::addPieChart() {
-    QPieSeries *series = new QPieSeries();
-    series->append("Jane", 1);
-    series->append("Joe", 2);
-    series->append("Andy", 3);
-    series->append("Barbara", 4);
-    series->append("Axel", 5);
 
-    QPieSlice *slice = series->slices().at(1);
-    slice->setExploded();
-    slice->setLabelVisible();
-    slice->setPen(QPen(Qt::darkGreen, 2));
-    slice->setBrush(Qt::green);
+    SystemUtil util;
+    QList<Disk> *diskList = new QList<Disk>();
+    int returnCode = util.getDiskList(diskList);
+
+    if(returnCode == ST_SUCCESS){
+        qDebug() << "Successfully retrieved disk list. . . ";
+    }else {
+        qDebug() << "Problem retrieving disk list . . . . .";
+    }
+
+    QPieSeries *series = new QPieSeries();
+    QList<QPieSlice*> sliceList;
+    QPieSlice *slice;
+    quint64 totalBytes = 0;
+
+    for(int i = 0; i < diskList->size() ; i++){
+        totalBytes += diskList->at(i).getTotalBytes();
+    }
+
+    for(int i = 0; i < diskList->size() ; i++){
+        qreal percentage = (qreal)diskList->at(i).getTotalBytes() / (qreal)totalBytes;
+        QString str = QString(diskList->at(i).getRootPath()+" = "
+                              + QString::number(percentage*100) + " %");
+        slice = new QPieSlice(str, percentage);
+        sliceList.append(slice);
+    }
+
+    series->append(sliceList);
+    connect(series, SIGNAL(hovered(QPieSlice*,bool)), this, SLOT(handleLabel(QPieSlice*,bool)));
 
     QChart *chart = new QChart();
     chart->addSeries(series);
-    chart->setTitle("Simple piechart example");
-    chart->legend()->hide();
+    chart->legend()->setVisible(true);
+    chart->legend()->setAlignment(Qt::AlignLeft);
+    chart->legend()->setShowToolTips(true);
+    chart->setTitle(QString("Disk Information (Disk Count : "+QString::number(diskList->size())+" )"));
 
     QChartView *chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
@@ -199,4 +234,36 @@ void MainWindow::addDonutChart() {
     chartView->chart()->legend()->setFont(QFont("Arial", 7));
 
     ui->hlFileSystems->addWidget(chartView);
+}
+
+/**
+ * @brief MainWindow::handleLabel
+ * @param slice
+ * @param state
+ *
+ * Changes states of label of slices on the basis of hovering
+ */
+void MainWindow::handleLabel(QPieSlice *slice, bool state){
+
+    if(state == true){
+        slice->setLabelVisible(true);
+        slice->setBorderColor(QColor(Qt::green));
+        slice->setBorderWidth(2);
+    }else{
+        slice->setLabelVisible(false);
+        slice->setBorderColor(QColor(Qt::white));
+        slice->setBorderWidth(1);
+    }
+
+}
+
+/**
+ * @brief MainWindow::refreshSettings
+ *
+ * Slot function to apply the settings as soon as settings are changed.
+ */
+void MainWindow::refreshSettings(){
+
+    processTimer->setInterval(settings.value("timer/process").toInt() * 1000);
+    socketTimer->setInterval(settings.value("timer/socket").toInt() * 1000);
 }

@@ -48,6 +48,7 @@ class SystemUtil : public QObject
 
     QProcess     *mTopProcess;      // Qprocess mTopProcess handle the subprocess 'top'
     QProcess     *mNetstatProcess;  // QProcess mNetstatProcess handle the subprocess 'netstat'
+    QProcess     *mDfProcess;       // QProcess mDfProcess handle the subprocess 'df'
     QString       mProcess;         // The path of subprocess 'top'
     QStringList   mEnv;             // Sets necessary TERM environment variable required for top command
     QStringList   mArguments;       // Arguments list to handle processes properly
@@ -76,7 +77,7 @@ public:
      * @param diskList           - contains list of Disks
      * @return exit_status
      *
-     * Analyze the details of disks that are mounted on the system
+     * Analyze the details of disks on the system
      * and poplutes the diskList with Disk object
      */
     int getDiskList(QList<Disk> *diskList);
@@ -96,17 +97,27 @@ public:
      * @param processList
      * @return exit_status
      *
-     * takes the output of top command, split it and store it in Process data structure
+     * takes the output of top command, split it and store it in Process value object
      * appends the process to processList
      */
     int parseProcesses(QList<Process> *processList);
+
+    /**
+     * @brief parseDisks
+     * @param diskList
+     * @return exit_status
+     *
+     * takes the output of df command, split it and store it in Disk value object
+     * appends the disk to diskList
+     */
+    int parseDisks(QList<Disk> *diskList);
 
     /**
      * @brief parseSockets
      * @param socketList
      * @return exit_status
      *
-     * takes the output of netstat command, split it and store it in NetworkSocket data structure
+     * takes the output of netstat command, split it and store it in NetworkSocket value object
      * appends the process to socketList
      */
     int parseSockets(QList<NetworkSocket> *socketList);

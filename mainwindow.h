@@ -27,10 +27,14 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtCharts/QPieSlice>
 
 #include "settingsdialog.h"
 #include "aboutdialog.h"
 #include "processwidget.h"
+#include "resourceswidget.h"
+
+using namespace QtCharts;
 
 namespace Ui {
 class MainWindow;
@@ -51,6 +55,7 @@ private slots:
     void save();
     void about();
     void showSettings();
+    void handleLabel(QPieSlice*, bool);
 
 private:
     void createMenus();
@@ -64,6 +69,13 @@ private:
     AboutDialog         dlgAbout;
     SettingsDialog      dlgSettings;
     ProcessWidget      *widProcesses;
+    ResourcesWidget    *widResources;
+    QTimer             *processTimer;
+    QTimer             *socketTimer;
+    QSettings           settings;
+
+public slots:
+    void refreshSettings();
 };
 
 #endif // MAINWINDOW_H

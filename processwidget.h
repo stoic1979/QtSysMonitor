@@ -28,7 +28,6 @@
 
 #include <QWidget>
 #include <QTableWidget>
-#include <QPushButton>
 #include "systemutil.h"
 
 /**
@@ -42,17 +41,20 @@ class ProcessWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit ProcessWidget(QTableWidget *wid,QPushButton *btn, QWidget *parent = 0);
+    explicit ProcessWidget(QTableWidget *wid, QWidget *parent = 0);
     ~ProcessWidget();
 
 
 private:
     QTableWidget  *widget;
-    QPushButton   *refreshButton;
+
+signals:
+    void refreshData();
 
 public slots:
     void populateUi();
     void deleteAllocatedItems();
+    void refreshTimer();
 
 };
 

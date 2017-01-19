@@ -43,7 +43,8 @@ HEADERS  += mainwindow.h \
     defs.h \
     systemutil.h \
     processwidget.h \
-    resourceswidget.h
+    resourceswidget.h \
+    sysinfofactory.h
 
 
 FORMS    += mainwindow.ui \
